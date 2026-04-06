@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# WiX build outputs
+*.msi
+*.wixpdb
+.wix/
+
+# Custom build artifacts
+src.zip
+TempSource/
+

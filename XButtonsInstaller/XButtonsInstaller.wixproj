@@ -1,0 +1,20 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.2">
+  <ItemGroup>
+    <Content Include="Bitmaps\CADmunity-installer-banner.bmp" />
+    <Content Include="Bitmaps\CADmunity-installer-left.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CreateSourceZip.ps1" />
+    <None Include="Resources\license.rtf" />
+    <None Include="src.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="6.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XButtons\XButtonsAddin.csproj" />
+  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell -Command &quot;$staging = 'TempSource'; if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }; New-Item -ItemType Directory -Path $staging; Get-ChildItem -Path '$(SolutionDir)*' -Recurse | Where-Object { $_.FullName -notmatch '\\(bin|obj|\.vs|\.git|TempSource)(\\|$)' -and $_.Extension -notmatch '(\.user|\.suo)$' -and $_.Name -ne 'src.zip' } | Copy-Item -Destination { Join-Path $staging $_.FullName.Substring('$(SolutionDir)'.Length) } -Force; Compress-Archive -Path \&quot;$staging\*\&quot; -DestinationPath '$(ProjectDir)src.zip' -Force; Remove-Item $staging -Recurse -Force&quot;" />
+  </Target>
+</Project>

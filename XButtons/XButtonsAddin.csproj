@@ -53,11 +53,11 @@
   <ItemGroup>
     <Reference Include="SolidWorks.Interop.sldworks">
       <HintPath>C:\Program Files\SolidWorks Corp\SOLIDWORKS\api\redist\SolidWorks.Interop.sldworks.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swconst">
       <HintPath>C:\Program Files\SolidWorks Corp\SOLIDWORKS\api\redist\SolidWorks.Interop.swconst.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swpublished">
       <HintPath>C:\Program Files\SolidWorks Corp\SOLIDWORKS\api\redist\SolidWorks.Interop.swpublished.dll</HintPath>
@@ -65,6 +65,7 @@
     </Reference>
     <Reference Include="solidworkstools">
       <HintPath>C:\Program Files\SolidWorks Corp\SOLIDWORKS\solidworkstools.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
