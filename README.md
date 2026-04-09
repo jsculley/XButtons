@@ -79,11 +79,42 @@ Common assignments:
 ## Project structure
 
 ```
-xbuttons/
-├── XButtonsAddin.cs      # ISwAddin implementation, add-in lifecycle
-├── MouseHook.cs          # WH_MOUSE_LL hook, SendInput keystroke synthesis
-├── XButtons.csproj
-└── XButtons.sln
+XButtons/
+├── LICENSE
+├── README.md
+├── XButtons.sln
+│    
+├── XButtons
+│   ├── app.config
+│   ├── InputFactory.cs             # Factory methods for dealing with Win32 INPUT structures
+│   ├── MouseHook.cs                # The mouse handling hook
+│   ├── SetupDialog.cs              # Setup/modification dialog
+│   ├── Win32.cs                    # Win32 API constants, strucures and methods
+│   ├── xbuttons.ico                # Dialog icon
+│   ├── XButtonsAddin.cs            # SOLIDWORKS add-in implementation
+│   └── Properties
+│        └── Settings.settings      # Add-in settings
+│            
+└── XButtonsInstaller
+    ├── CreateSourceZip.ps1             # Helper script for src.zip generation
+    ├── CustomActions.wxs               # Custom actions to run regasm
+    ├── Folders.wxs                     # Installed folder structure
+    ├── Package.en-us.wxl               # Localization resources
+    ├── Product.wxs                     # Production definition
+    ├── Registry.wxs                    # Create registry keys for add-in
+    ├── SourceCode.wxs                  # Installed source code component
+    ├── src.zip                         # Packaged source files
+    ├── UI.wxs                          # Installer UI
+    ├── XButtonsComponents.wxs          # Add-in components
+    ├── XButtonsInstaller.wixproj       #
+    │    
+    ├── Bitmaps
+    │    ├── CADmunity-installer-banner.bmp     # Custom top image for installer dialog
+    │    └── CADmunity-installer-left.bmp       # Custom left side banner for installer dialog
+    │                            
+    └── Resources
+         ├── license.rtf                # MIT license for installer
+         └── xbuttons.ico               # Installed programs icon
 ```
 
 ---
