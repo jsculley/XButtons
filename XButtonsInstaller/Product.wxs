@@ -1,0 +1,33 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+	<Package
+		Id="CADmunity.XButtonsInstaller"
+		Name="XButtons"
+		Manufacturer="CADmunity"
+		Version="1.1.0.0"
+		UpgradeCode="{844EBDAB-A26C-489C-895F-20651DE2E2E5}">
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+		<MediaTemplate EmbedCab="yes"/>
+		<CustomActionRef Id ="RegisterAddin"/>
+		<CustomActionRef Id="UnregisterAddin"/>
+		<UIRef Id="XButtonsInstallUI"/>
+		
+		<InstallExecuteSequence>
+			<!-- Register during install or repair, but not during uninstall -->
+			<Custom Action="RegisterAddin" After="InstallFiles" Condition="NOT Installed OR MaintenanceMode=&quot;Modify&quot;" />
+			<!-- Unregister BEFORE removing files during an uninstall -->
+			<Custom Action="UnregisterAddin" Before="RemoveFiles" Condition="Installed AND NOT UPGRADINGPRODUCTCODE" />
+		</InstallExecuteSequence>
+
+		<Feature Id="Main" Title="XButtons Add-in" Level="1">
+			<ComponentGroupRef Id="XButtonsComponents" />
+			<ComponentGroupRef Id="RegistrationComponents"/>
+			<Feature Id="SourceCode"
+					 Title="Source Code Zip"
+					 Description="Include a .zip file of the source code in the installation folder."
+					 Level="10">
+				<ComponentGroupRef Id="SourceZipComponent"/>
+			</Feature>
+		</Feature>
+	</Package>
+</Wix>

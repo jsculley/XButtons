@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Fragment>
+		<!-- Find the location of the 64-bit regasm.exe application -->
+		<Property Id="NETFRAMEWORK40FULLINSTALLROOTDIR64">
+			<RegistrySearch Id="FindNetFx40"
+							Root="HKLM"
+							Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"
+							Name="InstallPath"
+							Type="raw"
+							Bitness="always64" />
+		</Property>
+
+		<!-- Define the commands to register and unregister the DLL with COM -->
+		<CustomAction Id="RegisterAddin"
+			  Directory="INSTALLFOLDER"
+			  ExeCommand='"[NETFRAMEWORK40FULLINSTALLROOTDIR64]RegAsm.exe" /codebase "[INSTALLFOLDER]XButtons.dll"'
+			  Execute="deferred"
+			  Return="check"
+			  Impersonate="no" />
+
+		<CustomAction Id="UnregisterAddin"
+			 Directory="INSTALLFOLDER"
+			 ExeCommand='"[NETFRAMEWORK40FULLINSTALLROOTDIR64]RegAsm.exe" /unregister "[INSTALLFOLDER]XButtons.dll"'
+			 Execute="deferred"
+			 Return="check"
+			 Impersonate="no" />
+	</Fragment>
+</Wix>

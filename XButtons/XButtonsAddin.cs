@@ -1,10 +1,17 @@
 ﻿//SOLIDWORKS libraries
 using SolidWorks.Interop.sldworks;
 using SolidWorks.Interop.swpublished;
+using SolidWorks.Interop.swconst;
 using SolidWorksTools;
 //System libraries
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
+using static com.cadmunity.xbuttons.InputFactory;
+
+//Windows API
+using static com.cadmunity.xbuttons.Win32;
 
 namespace com.cadmunity.xbuttons
 {
@@ -13,10 +20,11 @@ namespace com.cadmunity.xbuttons
     /// translates them into keyboard shortcuts that SolidWorks can be configured
     /// to respond to.
     ///
-    /// X1 (back button) → Ctrl+Alt+Shift+B
-    /// X2 (forward button) → Ctrl+Alt+Shift+F
+    /// When first loaded, a setup dialog allows the user to spcify what
+    /// key combinations (chords) will be sent by the X1 (back) and X2 (forward)
+    /// mouse buttons.
     ///
-    /// These shortcuts can be bound to any SolidWorks command via
+    /// These shortcuts can then be bound to any SolidWorks command via
     /// Tools → Customize → Keyboard.
     /// </summary>
     [Guid("FADD2C64-FD1A-4624-B8B5-8C0597E36AB6"), ComVisible(true)]
@@ -129,13 +137,23 @@ namespace com.cadmunity.xbuttons
         {
             swApp = (ISldWorks)ThisSW;
             addinID = cookie;
+            if (Properties.Settings.Default.UpgradeRequired)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+            if (Properties.Settings.Default.FirstLoad)
+            {
+                showSettingsDialog();
+            }
 
             //Setup callbacks
             swApp.SetAddinCallbackInfo(0, this, addinID);
-
+            createMenu();
             // Safety: stop any existing hook before installing a new one
             mouseHook?.Stop();
-            mouseHook = new MouseHook();
+            mouseHook = new MouseHook(getInputStructure(XButton.X1), getInputStructure(XButton.X2));
             mouseHook.Start();
             return true;
         }
@@ -151,6 +169,7 @@ namespace com.cadmunity.xbuttons
         {
             mouseHook.Stop();
             mouseHook = null;
+            removeMenu();
             if (swApp != null)
             {
                 Marshal.ReleaseComObject(swApp);
@@ -164,6 +183,73 @@ namespace com.cadmunity.xbuttons
             GC.WaitForPendingFinalizers();
 
             return true;
+        }
+        #endregion
+
+        #region Callbacks
+        /// <summary>
+        /// Display the dialog that lets the user specify what key chords will be linked
+        /// to the X1 and X2 mouse buttons
+        /// </summary>
+        public void showSettingsDialog()
+        {
+            using (SetupDialog dlg = new SetupDialog())
+            {
+                DialogResult dr = new SetupDialog().ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    mouseHook?.Stop();
+                    mouseHook = new MouseHook(getInputStructure(XButton.X1), getInputStructure(XButton.X2));
+                    mouseHook.Start();
+                }
+            }
+        }
+        #endregion
+
+        #region Private implementation
+
+        /// <summary>
+        /// Registers the add-in's custom menus from the SOLIDWORKS user interface.
+        /// </summary>
+        /// <remarks>
+        /// This method loops through all standard document frames (Part, Assembly, Drawing) 
+        /// to ensure the "XButtons" and "Settings" menus are added during add-in startup 
+        /// </remarks>
+        private void createMenu()
+        {
+            int[] docTypes = {
+                (int)swDocumentTypes_e.swDocNONE,
+                (int)swDocumentTypes_e.swDocPART,
+                (int)swDocumentTypes_e.swDocASSEMBLY,
+                (int)swDocumentTypes_e.swDocDRAWING
+            };
+            foreach (int docType in docTypes)
+            {
+                int commandID = swApp.AddMenuItem5(docType, addinID, "&Settings...@&XButtons@&Tools", -1, "showSettingsDialog", "", "Change XButtons settings", new string[3]);
+            }
+        }
+
+        /// <summary>
+        /// Unregisters the add-in's custom menus from the SOLIDWORKS user interface.
+        /// </summary>
+        /// <remarks>
+        /// This method loops through all standard document frames (Part, Assembly, Drawing) 
+        /// to ensure the "XButtons" and "Settings" menus are removed during add-in shutdown 
+        /// or cleanup, preventing "ghost" menu items.
+        /// </remarks>
+        private void removeMenu()
+        {
+            int[] docTypes = {
+                (int)swDocumentTypes_e.swDocNONE,
+                (int)swDocumentTypes_e.swDocPART,
+                (int)swDocumentTypes_e.swDocASSEMBLY,
+                (int)swDocumentTypes_e.swDocDRAWING
+            };
+            foreach (int docType in docTypes)
+            {
+                swApp.RemoveMenu(docType, "&Settings...@&XButtons@&Tools", "");
+               swApp.RemoveMenu(docType, "&XButtons@&Tools", "");
+            }
         }
         #endregion
     }

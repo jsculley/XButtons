@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Fragment>	  
+	  <!-- Includes the src.zip file which is created by a pre-build event.-->
 	  <ComponentGroup Id="SourceZipComponent" Directory="INSTALLFOLDER">
 		  <Component Guid="*">
 			  <File Source="src.zip" KeyPath="yes" />

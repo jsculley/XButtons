@@ -1,11 +1,8 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Fragment>
     <ComponentGroup Id="XButtonsComponents" Directory="INSTALLFOLDER">
-		<!--Component>
-        <File Source="XButtonsComponents.wxs" />
-      </Component-->
 		<Component Guid="*">
-			<File Source="$(var.XButtonsAddin.TargetDir)XButtons.dll" KeyPath="yes" />
+			<File Source="$(var.XButtonsAddin.TargetDir)XButtons.dll" KeyPath="yes"/>
 		</Component>
 		
 		<Component Guid="*">

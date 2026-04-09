@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Fragment>
+	  <UI Id="XButtonsInstallUI">
+		  <ui:WixUI Id="WixUI_FeatureTree" />
+	  </UI>
+	  
+	  <!-- The icon that appears in list of installed applications -->
+	  <Icon Id="XButtonsAddinIcon" SourceFile="Resources\xbuttons.ico"/>
+	  <Property Id="ARPPRODUCTICON" Value="XButtonsAddinIcon" />
+
+	  <!-- Custom installer dialog images -->
+	  <WixVariable Id="WixUIDialogBmp" Value="Bitmaps\CADmunity-installer-left.bmp" />
+	  <WixVariable Id="WixUIBannerBmp" Value="Bitmaps\CADmunity-installer-banner.bmp" />
+
+	  <!-- Existing License Variable -->
+	  <WixVariable Id="WixUILicenseRtf" Value="Resources\License.rtf" />
+  </Fragment>
+</Wix>

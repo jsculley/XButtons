@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Fragment>
-	  <ComponentGroup Id="AddInRegistryGroup">
-		  <Component Id="AddInMachineRegistry" Guid="{E8393A37-3660-4EB7-85D1-3588D355FC99}" Directory="INSTALLFOLDER">
-			  <!-- HKLM: To show up in the Add-ins list -->
-			  <RegistryKey Root="HKLM" Key="Software\SolidWorks\Addins\{FADD2C64-FD1A-4624-B8B5-8C0597E36AB6}">
-				  <RegistryValue Value="1" Type="integer" KeyPath="yes" />
-				  <RegistryValue Name="Description" Value="Pass X1/X2 mouse button clicks to SOLIDWORKS" Type="string" />
-				  <RegistryValue Name="Title" Value="XButtons" Type="string" />
-			  </RegistryKey>
-
-		  </Component>
-		  
-		  <Component Id="AddInUserRegistry" Guid="{A78BE7ED-9CCF-4496-8897-56814606B4C7}" Directory="INSTALLFOLDER">
-			  <!-- HKCU: To load on startup -->
-			  <RegistryKey Root="HKCU" Key="Software\SolidWorks\AddInsStartup\{YOUR-ADDIN-GUID}">
-				  <RegistryValue Value="1" Type="integer" KeyPath="yes" />
-			  </RegistryKey>
+	  <!-- Adds the add-in GUID to the list of installed add-ins in the Windows registry -->
+	  <ComponentGroup Id="RegistrationComponents">
+		  <Component Id="AddinRegistration" Guid="*">
+		  <RegistryKey Root="HKLM" Key="Software\SolidWorks\AddIns\{FADD2C64-FD1A-4624-B8B5-8C0597E36AB6}">
+			  <RegistryValue Type="string" Name="Description" Value="Pass X1/X2 buttons to SOLIDWORKS" />
+			  <RegistryValue Type="string" Name="Title" Value="XButtons" />
+		  </RegistryKey>
 		  </Component>
 	  </ComponentGroup>
   </Fragment>
