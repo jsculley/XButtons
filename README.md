@@ -23,6 +23,26 @@ If you later want to change the combinations, you can use the Tools&rarr;XButton
 
 ---
 
+## Installation using Windows Installer (MSI) File
+1. Download the Windows Installer .msi file from the [Releases](https://github.com/jsculley/XButtons/releases) page
+2. Double-click the MSI file and follow the prompts
+3. Start SOLIDWORKS
+4. Go to Tools&rarr;Add-Ins, scroll down and check the 'Active Add-Ins' checkbox.  To always load the add in, check the 'Startup' checkbox.
+5. Click OK and the XButtons setup dialog should appear
+
+## Installing manually
+1. Download XButtons.dll and solidworkstools.dll from the [Releases](https://github.com/jsculley/XButtons/releases) page
+2. Place the files together in a folder
+3. Register the add-in with SOLIDWORKS:
+   ```
+   C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm /codebase <full path to XButtons.dll>
+   ```
+4. Restart SOLIDWORKS — the add-in will appear in **Tools → Add-ins**
+To unregister:
+```
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm /unregister <full path to XButtons.dll>
+```
+
 ## Building
 
 1. Clone the repository
@@ -36,27 +56,9 @@ If you later want to change the combinations, you can use the Tools&rarr;XButton
 
 ---
 
-## Installation using Windows Installer (MSI) File
-1. Download the Windows Installer .msi file from the [Releases](https://github.com/jsculley/XButtons/releases) page
-2. Double-click the MSI file and follow the prompts
-3. Start SOLIDWORKS
-4. Go to Tools&rarr;Add-Ins, scroll down and check the 'Active Add-Ins' checkbox.  To always load the add in, check the 'Startup' checkbox.
-5. Click OK and the XButtons setup dialog should appear
-
-
 ## Installation from source
-1. Build the solution (see above)
-2. Open a **Developer Command Prompt for Visual Studio** as Administrator
-3. Register the add-in with SOLIDWORKS:
-   ```
-   C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm /codebase <full path to XButtons.dll>
-   ```
-4. Restart SOLIDWORKS — the add-in will appear in **Tools → Add-ins**
-
-To unregister:
-```
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm /unregister <full path to XButtons.dll>
-```
+1. Start Visual Studio as admin and build the solution (see above)
+2. Start the Debugger and SOLIDWORKS should start and the add-in will appear in **Tools → Add-ins**
 
 ---
 
